@@ -73,7 +73,7 @@ namespace WpfApp1.MVVM.ViewModel
         //    }
         //}
 
-        public static List<string> DisplayMonsterImages()
+        public static List<(string Name, string ImageUrl)> DisplayMonsterImages()
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -83,22 +83,25 @@ namespace WpfApp1.MVVM.ViewModel
             using var context = new ExerciceMonsterContext(_connectionString);
             try
             {
-                // Récupérer toutes les URL d'images des monstres
-                var monsterImages = context.Monsters.Select(m => m.ImageUrl).ToList();
+                // Récupérer les noms et URL d'images des monstres
+                var monsters = context.Monster
+                    .Select(m => new { m.Name, m.ImageUrl })
+                    .ToList();
 
-                if (!monsterImages.Any())
+                if (!monsters.Any())
                 {
-                    MessageBox.Show("Aucune image de monstre trouvée.");
+                    MessageBox.Show("Aucun monstre trouvé.");
                     return null;
                 }
 
-                // Afficher les URLs des images pour vérification (peut être retiré en production)
-                foreach (var imageUrl in monsterImages)
+                // Afficher les noms et URLs des images pour vérification (peut être retiré en production)
+                foreach (var monster in monsters)
                 {
-                    MessageBox.Show($"ImageURL: {imageUrl}");
+                    MessageBox.Show($"Name: {monster.Name}, ImageURL: {monster.ImageUrl}");
                 }
 
-                return monsterImages;
+                // Retourner une liste de tuples contenant le nom et l'URL de l'image
+                return monsters.Select(m => (m.Name, m.ImageUrl)).ToList();
             }
             catch (SqlException sqlEx)
             {

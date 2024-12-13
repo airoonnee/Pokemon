@@ -31,9 +31,9 @@ public partial class ExerciceMonsterContext : DbContext
 
 
     public virtual DbSet<Login> Login { get; set; }
-    public virtual DbSet<Monster> Monsters { get; set; }
-    public virtual DbSet<Player> Players { get; set; }
-    public virtual DbSet<Spell> Spells { get; set; }
+    public virtual DbSet<Monster> Monster { get; set; }
+    public virtual DbSet<Player> Player { get; set; }
+    public virtual DbSet<Spell> Spell { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

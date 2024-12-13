@@ -24,28 +24,52 @@ namespace WpfApp1.MVVM.View
         public MonstresView()
         {
             InitializeComponent();
-            //LoadMonsterImages();
+            LoadMonsterImages();
+
         }
-        //private void LoadMonsterImages()
-        //{
-        //    // Appel de la fonction pour récupérer toutes les URLs des images des monstres
-        //    var monsterImages = DataMonster.DisplayMonsterImages();
+        private void LoadMonsterImages()
+        {
+            var monsters = DataMonster.DisplayMonsterImages();
 
-        //    if (monsterImages != null && monsterImages.Any())
-        //    {
-        //        foreach (var imageUrl in monsterImages)
-        //        {
-        //            Console.WriteLine($"Image URL: {imageUrl}");
-        //            // Vous pouvez également afficher ces images dans l'interface utilisateur, si nécessaire.
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Aucune image trouvée.");
-        //    }
+            if (monsters != null && monsters.Any())
+            {
+                foreach (var monster in monsters)//monsterImages)
+                {
+                    var nameTextBlock = new TextBlock
+                    {
+                        Text = monster.Name,
+                        FontSize = 16,
+                        Margin = new Thickness(5),
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
 
-        //    //var monster = context.Monster.FirstOrDefault(m => m.Monster == monster);
+                    try
+                    {
+                        // Créer un contrôle Image
+                        var image = new Image
+                        {
+                            Source = new BitmapImage(new Uri(monster.ImageUrl)), // Charger l'image depuis l'URL
+                            Height = 150, // Ajustez la taille selon vos besoins
+                            Margin = new System.Windows.Thickness(5)
+                        };
 
-        //}
+                        // Ajouter l'image au StackPanel
+                        ImageStackPanel.Children.Add(nameTextBlock);
+                        ImageStackPanel.Children.Add(image);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur lors de l'affichage du nom {monster.ImageUrl}: {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Aucune image trouvée.");
+            }
+
+            //var monster = context.Monster.FirstOrDefault(m => m.Monster == monster);
+
+        }
     }
 }
