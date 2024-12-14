@@ -35,6 +35,37 @@ namespace WpfApp1.MVVM.View
             {
                 foreach (var monster in monsters)//monsterImages)
                 {
+                    // Créer un bouton
+                    var button = new Button
+                    {
+                        Margin = new Thickness(5),
+                        HorizontalAlignment = HorizontalAlignment.Stretch
+                    };
+
+                    // Créer un StackPanel pour contenir l'image et le texte
+                    var stackPanel = new StackPanel
+                    {
+                        Orientation = Orientation.Vertical
+                    };
+
+                    // Ajouter l'image au StackPanel
+
+                    try
+                    {
+                        var image = new Image
+                        {
+                            Source = new BitmapImage(new Uri(monster.ImageUrl)),
+                            Height = 150, // Ajustez la taille selon vos besoins
+                            Margin = new Thickness(5)
+                        };
+                        stackPanel.Children.Add(image);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Erreur lors de l'affichage du nom {monster.ImageUrl}: {ex.Message}");
+                    }
+                    // Ajouter le texte au StackPanel
                     var nameTextBlock = new TextBlock
                     {
                         Text = monster.Name,
@@ -42,25 +73,13 @@ namespace WpfApp1.MVVM.View
                         Margin = new Thickness(5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
+                    stackPanel.Children.Add(nameTextBlock);
 
-                    try
-                    {
-                        // Créer un contrôle Image
-                        var image = new Image
-                        {
-                            Source = new BitmapImage(new Uri(monster.ImageUrl)), // Charger l'image depuis l'URL
-                            Height = 150, // Ajustez la taille selon vos besoins
-                            Margin = new System.Windows.Thickness(5)
-                        };
+                    // Ajouter le StackPanel au bouton
+                    button.Content = stackPanel;
 
-                        // Ajouter l'image au StackPanel
-                        ImageStackPanel.Children.Add(nameTextBlock);
-                        ImageStackPanel.Children.Add(image);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Erreur lors de l'affichage du nom {monster.ImageUrl}: {ex.Message}");
-                    }
+                    // Ajouter le bouton au StackPanel principal
+                    ImageStackPanel.Children.Add(button);
                 }
             }
             else

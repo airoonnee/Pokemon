@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using System.Windows;
 using WpfApp1.MVVM.Model;
-using WpfApp1.Service;
-using System.Threading;
 
 namespace WpfApp1.MVVM.ViewModel
 {
-    internal class MonstresVM
+    internal class SpellsVM
     {
     }
-    public static class DataMonster
+    public static class DataSpell
     {
         private static string _connectionString;
 
@@ -38,7 +36,7 @@ namespace WpfApp1.MVVM.ViewModel
             }
         }
 
-        public static List<(string Name, string ImageUrl)> DisplayMonsterImages()
+        public static List<(string Name, int Damage, string Description)> DisplaySpell()
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -49,24 +47,24 @@ namespace WpfApp1.MVVM.ViewModel
             try
             {
                 // Récupérer les noms et URL d'images des monstres
-                var monsters = context.Monster
-                    .Select(m => new { m.Name, m.ImageUrl})
+                var spells = context.Spell
+                    .Select(m => new { m.Name, m.Damage, m.Description })
                     .ToList();
 
-                if (!monsters.Any())
+                if (!spells.Any())
                 {
                     MessageBox.Show("Aucun monstre trouvé.");
                     return null;
                 }
 
                 // Afficher les noms et URLs des images pour vérification (peut être retiré en production)
-                foreach (var monster in monsters)
+                foreach (var spell in spells)
                 {
-                    MessageBox.Show($"Name: {monster.Name}, ImageURL: {monster.ImageUrl}");
+                    MessageBox.Show($"Name: {spell.Name}, Damage: {spell.Damage}");
                 }
 
                 // Retourner une liste de tuples contenant le nom et l'URL de l'image
-                return monsters.Select(m => (m.Name, m.ImageUrl)).ToList();
+                return spells.Select(m => (m.Name, m.Damage, m.Description)).ToList();
             }
             catch (SqlException sqlEx)
             {

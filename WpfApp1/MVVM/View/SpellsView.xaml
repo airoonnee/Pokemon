@@ -8,6 +8,49 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        
+        <!-- Définition des lignes et colonnes du Grid -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto" MinHeight="35.96" />
+            <!-- Barre de tri -->
+            <RowDefinition />
+            <!-- Contenu scrollable -->
+        </Grid.RowDefinitions>
+
+        <!-- Titre "Spells" -->
+        <TextBlock Text="Spells" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+
+        <!-- Barre de tri par Pokémon -->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Center" Width="118">
+            <TextBlock Text="Filtrer par Pokémon : " VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <!-- <ComboBox Width="200" Name="PokemonFilterComboBox" SelectionChanged="OnPokemonFilterChanged">
+                 Les items peuvent être liés via DataBinding
+                <ComboBoxItem Content="Tous" IsSelected="True"/>
+                <ComboBoxItem Content="Pokémon 1"/>
+                <ComboBoxItem Content="Pokémon 2"/>
+                <ComboBoxItem Content="Pokémon 3"/>
+            </ComboBox> -->
+        </StackPanel>
+
+        <!-- ScrollViewer pour afficher les sorts -->
+        <!-- ScrollViewer pour afficher les sorts -->
+        <ScrollViewer Grid.Row="2" Margin="10,10,10,10" VerticalScrollBarVisibility="Auto">
+            <ItemsControl Name="SpellsItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="5">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                <!-- Nom du sort -->
+                                <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Margin="0,5"/>
+                                <!-- Dégâts du sort -->
+                                <TextBlock Text="Damage: {Binding Damage}" FontSize="14" Margin="0,5"/>
+                                <!-- Description du sort -->
+                                <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" Margin="0,5"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

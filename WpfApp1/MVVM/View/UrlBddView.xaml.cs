@@ -36,6 +36,7 @@ namespace WpfApp1.MVVM.View
             DataLogin.Initialize(connectionString);
             DataSignup.Initialize(connectionString);
             DataMonster.Initialize(connectionString);
+            DataSpell.Initialize(connectionString);
 
             MessageBox.Show("Connection Réussi !");
         }
