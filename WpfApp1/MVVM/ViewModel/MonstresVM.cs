@@ -38,7 +38,7 @@ namespace WpfApp1.MVVM.ViewModel
             }
         }
 
-        public static List<(string Name, int Health, string ImageUrl, List<int> Spells)> DisplayMonsterImages()
+        public static List<(int Id, string Name, int Health, string ImageUrl, List<int> Spells)> DisplayMonsterImages()
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -52,6 +52,7 @@ namespace WpfApp1.MVVM.ViewModel
                 var monsters = context.Monster
                     .Select(m => new 
                     { 
+                        m.Id,
                         m.Name, 
                         m.Health, 
                         m.ImageUrl,
@@ -73,7 +74,7 @@ namespace WpfApp1.MVVM.ViewModel
                 //}
 
                 // Retourner une liste de tuples contenant le nom et l'URL de l'image
-                return monsters.Select(m => (m.Name, m.Health, m.ImageUrl, m.Spells)).ToList();
+                return monsters.Select(m => (m.Id, m.Name, m.Health, m.ImageUrl, m.Spells)).ToList();
                 //return monsters.Select(m => (m.Name, m.Health, m.ImageUrl, m.Spells.Select(s => s.Damage).ToList())).ToList();
 
             }

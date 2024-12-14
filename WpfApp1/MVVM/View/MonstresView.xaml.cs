@@ -38,7 +38,7 @@ namespace WpfApp1.MVVM.View
             if (monsters != null && monsters.Any())
             {
 
-                foreach (var monster in monsters)//monsterImages)
+                foreach (var tupleMonster in monsters)//monsterImages)
                 {
                     //foreach (var spellId in monster.Spells) // ID des sorts du monstre
                     //{
@@ -55,6 +55,25 @@ namespace WpfApp1.MVVM.View
 
                     //MessageBox.Show(spellsText);
 
+                    var monsterSpells = spells
+                    .Where(s => tupleMonster.Spells.Contains(s.Id)) // Associer les sorts par Id
+                    .Select(s => new Spell // Conversion explicite en objets Spell
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Damage = s.Damage,
+                        Description = s.Description
+                    })
+                    .ToList();
+
+                    var monster = new Monster
+                    {
+                        Id = tupleMonster.Id,
+                        Name = tupleMonster.Name,
+                        Health = tupleMonster.Health,
+                        ImageUrl = tupleMonster.ImageUrl,
+                        Spell = monsterSpells  // Associer les sorts
+                    };
                     // Créer un bouton
                     var button = new Button
                     {
@@ -62,6 +81,22 @@ namespace WpfApp1.MVVM.View
                         //HorizontalAlignment = HorizontalAlignment.Stretch,
                         Tag = monster
                     };
+                    button.Click += (sender, args) =>
+                    {
+                        if (sender is Button clickedButton && clickedButton.Tag is Monster selectedMonster)
+                        {
+                            var spellDetails = selectedMonster.Spell
+                                .Select(spell => $"Nom: {spell.Name}, Dégâts: {spell.Damage}")
+                                .ToList();
+
+                            string message = spellDetails.Any()
+                                ? string.Join("\n", spellDetails)
+                                : "Aucun sort disponible.";
+
+                            MessageBox.Show($"Sorts du monstre {selectedMonster.Name}, HP : {selectedMonster.Health}:\n{message}");
+                        }
+                    };
+
 
                     // Créer un StackPanel pour contenir l'image et le texte
                     var stackPanelLeft = new StackPanel
@@ -102,9 +137,9 @@ namespace WpfApp1.MVVM.View
                     //stackPanelRight.Children.Add(nameTextBlock);
 
 
-                    var monsterSpells = spells
-                        .Where(spell => monster.Spells.Contains(spell.Id)) // Associez les sorts par ID
-                        .ToList();
+                    //var monsterSpells = spells
+                    //    .Where(spell => monster.Spell.Any(ms => ms.Id == spell.Id)) // Association par ID des sorts
+                    //    .ToList();
 
 
                     // Ajouter un TextBlock pour chaque sort

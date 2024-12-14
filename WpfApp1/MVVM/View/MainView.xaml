@@ -24,7 +24,6 @@
                     <View:LoginView/>
                 </Grid>
             </TabItem>
-            
         </TabControl>
     </Grid>
 </UserControl>
