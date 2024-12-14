@@ -35,17 +35,22 @@ namespace WpfApp1.MVVM.View
                 foreach (var spell in spells)
                 {
                     // Créer un conteneur pour chaque sort
+                    var border = new Border
+                    {
+                        BorderBrush = Brushes.Black,
+                        BorderThickness = new Thickness(1), // Correction : utilisation de Thickness pour la largeur de la bordure
+                        Margin = new Thickness(10)
+                    };
                     var spellPanel = new StackPanel
                     {
-                        Orientation = Orientation.Vertical,
-                        Margin = new Thickness(10)
+                        Orientation = Orientation.Vertical
                     };
 
                     // Ajouter le nom du sort
                     var nameTextBlock = new TextBlock
                     {
                         Text = spell.Name,
-                        FontSize = 18,
+                        FontSize = 9,
                         FontWeight = FontWeights.Bold,
                         Margin = new Thickness(0, 5, 0, 5),
                         HorizontalAlignment = HorizontalAlignment.Center
@@ -55,7 +60,7 @@ namespace WpfApp1.MVVM.View
                     var damageTextBlock = new TextBlock
                     {
                         Text = $"Damage: {spell.Damage}",
-                        FontSize = 14,
+                        FontSize = 7,
                         Margin = new Thickness(0, 0, 0, 5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
@@ -65,15 +70,16 @@ namespace WpfApp1.MVVM.View
                     var descriptionTextBlock = new TextBlock
                     {
                         Text = spell.Description,
-                        FontSize = 14,
+                        FontSize = 7,
                         TextWrapping = TextWrapping.Wrap,
                         Margin = new Thickness(0, 0, 0, 5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
                     spellPanel.Children.Add(descriptionTextBlock);
+                    border.Child = spellPanel;
 
                     // Ajouter le conteneur au ItemsControl
-                    SpellsItemsControl.Items.Add(spellPanel);
+                    SpellsWrapPanel.Children.Add(border);
                 }
             }
             else
@@ -82,12 +88,12 @@ namespace WpfApp1.MVVM.View
                 var noSpellsTextBlock = new TextBlock
                 {
                     Text = "Aucun sort disponible.",
-                    FontSize = 16,
+                    FontSize = 8,
                     FontWeight = FontWeights.Bold,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(10)
                 };
-                SpellsItemsControl.Items.Add(noSpellsTextBlock);
+                SpellsWrapPanel.Children.Add(noSpellsTextBlock);
             }
 
             //var monster = context.Monster.FirstOrDefault(m => m.Monster == monster);

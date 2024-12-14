@@ -38,7 +38,7 @@ namespace WpfApp1.MVVM.ViewModel
             }
         }
 
-        public static List<(string Name, string ImageUrl)> DisplayMonsterImages()
+        public static List<(string Name, int Health, string ImageUrl, List<int> Spells)> DisplayMonsterImages()
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -50,7 +50,14 @@ namespace WpfApp1.MVVM.ViewModel
             {
                 // Récupérer les noms et URL d'images des monstres
                 var monsters = context.Monster
-                    .Select(m => new { m.Name, m.ImageUrl})
+                    .Select(m => new 
+                    { 
+                        m.Name, 
+                        m.Health, 
+                        m.ImageUrl,
+                        Spells = m.Spell.Select( s => s.Id).ToList() // Récupérer les noms des sorts
+
+                    })
                     .ToList();
 
                 if (!monsters.Any())
@@ -60,13 +67,15 @@ namespace WpfApp1.MVVM.ViewModel
                 }
 
                 // Afficher les noms et URLs des images pour vérification (peut être retiré en production)
-                foreach (var monster in monsters)
-                {
-                    MessageBox.Show($"Name: {monster.Name}, ImageURL: {monster.ImageUrl}");
-                }
+                //foreach (var monster in monsters)
+                //{
+                //    MessageBox.Show($"Name: {monster.Name}, ImageURL: {monster.ImageUrl}");
+                //}
 
                 // Retourner une liste de tuples contenant le nom et l'URL de l'image
-                return monsters.Select(m => (m.Name, m.ImageUrl)).ToList();
+                return monsters.Select(m => (m.Name, m.Health, m.ImageUrl, m.Spells)).ToList();
+                //return monsters.Select(m => (m.Name, m.Health, m.ImageUrl, m.Spells.Select(s => s.Damage).ToList())).ToList();
+
             }
             catch (SqlException sqlEx)
             {

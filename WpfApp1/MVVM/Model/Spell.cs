@@ -13,5 +13,5 @@ public partial class Spell
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Monster> Monsters { get; set; } = new List<Monster>();
+    public virtual ICollection<Monster> Monster { get; set; } = new List<Monster>();
 }

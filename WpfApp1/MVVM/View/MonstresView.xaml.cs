@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.MVVM.Model;
 using WpfApp1.MVVM.ViewModel;
 
 namespace WpfApp1.MVVM.View
@@ -27,19 +28,39 @@ namespace WpfApp1.MVVM.View
             LoadMonsterImages();
 
         }
+        //private List<string> selectedMonsterSpells = new List<string>();
+
         private void LoadMonsterImages()
         {
             var monsters = DataMonster.DisplayMonsterImages();
+            var spells = DataSpell.DisplaySpell();
 
             if (monsters != null && monsters.Any())
             {
+
                 foreach (var monster in monsters)//monsterImages)
                 {
+                    //foreach (var spellId in monster.Spells) // ID des sorts du monstre
+                    //{
+                    //    foreach (var spell in spells) // Liste complète des sorts
+                    //    {
+                    //        if (spell.Id == spellId)
+                    //        {
+                    //            // Afficher le nom du sort correspondant
+                    //            MessageBox.Show($"Sort trouvé : {spell.Name}, name:{spell.Name}");
+                    //        }
+                    //    }
+                    //}
+                    //string spellsText = string.Join(", ", monster.Spells);
+
+                    //MessageBox.Show(spellsText);
+
                     // Créer un bouton
                     var button = new Button
                     {
                         Margin = new Thickness(5),
-                        HorizontalAlignment = HorizontalAlignment.Stretch
+                        //HorizontalAlignment = HorizontalAlignment.Stretch,
+                        Tag = monster
                     };
 
                     // Créer un StackPanel pour contenir l'image et le texte
@@ -55,7 +76,7 @@ namespace WpfApp1.MVVM.View
                         var image = new Image
                         {
                             Source = new BitmapImage(new Uri(monster.ImageUrl)),
-                            Height = 150, // Ajustez la taille selon vos besoins
+                            Height = 75, // Ajustez la taille selon vos besoins
                             Margin = new Thickness(5)
                         };
                         stackPanel.Children.Add(image);
@@ -69,17 +90,46 @@ namespace WpfApp1.MVVM.View
                     var nameTextBlock = new TextBlock
                     {
                         Text = monster.Name,
-                        FontSize = 16,
+                        FontSize = 8,
                         Margin = new Thickness(5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
                     stackPanel.Children.Add(nameTextBlock);
 
-                    // Ajouter le StackPanel au bouton
-                    button.Content = stackPanel;
+                    var monsterSpells = spells
+                        .Where(spell => monster.Spells.Contains(spell.Id)) // Associez les sorts par ID
+                        .ToList();
 
-                    // Ajouter le bouton au StackPanel principal
+                    // Ajouter un TextBlock pour chaque sort
+                    if (monsterSpells.Any())
+                    {
+                        foreach (var spell in monsterSpells)
+                        {
+                            var spellTextBlock = new TextBlock
+                            {
+                                Text = $"Spell : {spell.Name}, Damage : {spell.Damage}",
+                                FontSize = 7,
+                                Margin = new Thickness(5, 0, 5, 0),
+                                Foreground = Brushes.DarkSlateBlue
+                            };
+                            stackPanel.Children.Add(spellTextBlock);
+                        }
+                    }
+                    else
+                    {
+                        var noSpellsTextBlock = new TextBlock
+                        {
+                            Text = "Aucun sort disponible",
+                            FontSize = 7,
+                            Margin = new Thickness(5, 0, 5, 0),
+                            Foreground = Brushes.Gray
+                        };
+                        stackPanel.Children.Add(noSpellsTextBlock);
+                    }
+                    button.Content = stackPanel;
                     ImageStackPanel.Children.Add(button);
+
+                    
                 }
             }
             else
@@ -90,5 +140,8 @@ namespace WpfApp1.MVVM.View
             //var monster = context.Monster.FirstOrDefault(m => m.Monster == monster);
 
         }
+       
+
+
     }
 }

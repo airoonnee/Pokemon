@@ -11,14 +11,14 @@
 
     <Grid>
         <TabControl>
-            <TabItem Header="Spells">
-                <Grid>
-                    <View:SpellsView/>
-                </Grid>
-            </TabItem>
             <TabItem Header="Monstres">
                 <Grid>
                     <View:MonstresView/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Spells">
+                <Grid>
+                    <View:SpellsView/>
                 </Grid>
             </TabItem>
 

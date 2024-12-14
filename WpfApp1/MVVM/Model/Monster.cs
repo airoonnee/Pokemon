@@ -15,5 +15,5 @@ public partial class Monster
 
     public virtual ICollection<Player> Players { get; set; } = new List<Player>();
 
-    public virtual ICollection<Spell> Spells { get; set; } = new List<Spell>();
+    public virtual ICollection<Spell> Spell { get; set; } = new List<Spell>();
 }

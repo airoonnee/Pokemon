@@ -22,12 +22,63 @@
                    HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="10" />
         <!-- Section gauche : ScrollViewer avec des images -->
         <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="30">
-            <StackPanel x:Name="ImageStackPanel" Orientation="Vertical" />
+            <WrapPanel x:Name="ImageStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" />
         </ScrollViewer>
 
         <!-- Section droite : vide -->
-        <Grid Grid.Row="1" Grid.Column="1">
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="20" VerticalAlignment="Top">
             <!-- Contenu vide -->
-        </Grid>
+            <TextBlock Text="Pokemon Details" FontSize="20" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="10" />
+
+            <!-- Image centrée -->
+            <Image x:Name="PokemonImage" Height="75" Margin="10" 
+                   HorizontalAlignment="Center" />
+
+            <!-- Titre pour les sorts -->
+            <TextBlock Text="Spells:" FontSize="14" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="20,10,20,10" />
+            <!-- Sorts -->
+            <StackPanel>
+                <!-- Premier sort -->
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5">
+                        <StackPanel>
+                            <TextBlock Text="Nom : Sort 1" FontSize="10" Margin="5" />
+                            <TextBlock Text="Damage : 50" FontSize="10" Margin="5" />
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5" Grid.Column="1">
+                        <StackPanel>
+                            <TextBlock Text="Nom : Sort 2" FontSize="10" Margin="5" />
+                            <TextBlock Text="Damage : 50" FontSize="10" Margin="5" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <!-- Deuxième sort -->
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5">
+                        <StackPanel>
+                            <TextBlock Text="Nom : Sort 3" FontSize="10" Margin="5" />
+                            <TextBlock Text="Damage : 50" FontSize="10" Margin="5" />
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5" Grid.Column="1">
+                        <StackPanel>
+                            <TextBlock Text="Nom : Sort 4" FontSize="10" Margin="5" />
+                            <TextBlock Text="Damage : 50" FontSize="10" Margin="5" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>
