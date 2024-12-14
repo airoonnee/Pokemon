@@ -64,7 +64,11 @@ namespace WpfApp1.MVVM.View
                     };
 
                     // Créer un StackPanel pour contenir l'image et le texte
-                    var stackPanel = new StackPanel
+                    var stackPanelLeft = new StackPanel
+                    {
+                        Orientation = Orientation.Vertical
+                    };
+                    var stackPanelRight = new StackPanel
                     {
                         Orientation = Orientation.Vertical
                     };
@@ -79,8 +83,8 @@ namespace WpfApp1.MVVM.View
                             Height = 75, // Ajustez la taille selon vos besoins
                             Margin = new Thickness(5)
                         };
-                        stackPanel.Children.Add(image);
-
+                        stackPanelLeft.Children.Add(image);
+                        //stackPanelRight.Children.Add(image);
                     }
                     catch (Exception ex)
                     {
@@ -94,25 +98,44 @@ namespace WpfApp1.MVVM.View
                         Margin = new Thickness(5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
-                    stackPanel.Children.Add(nameTextBlock);
+                    stackPanelLeft.Children.Add(nameTextBlock);
+                    //stackPanelRight.Children.Add(nameTextBlock);
+
 
                     var monsterSpells = spells
                         .Where(spell => monster.Spells.Contains(spell.Id)) // Associez les sorts par ID
                         .ToList();
 
+
                     // Ajouter un TextBlock pour chaque sort
                     if (monsterSpells.Any())
                     {
+                        var namePokemon = new TextBlock
+                        {
+                            Text = $"{monster.Name}",
+                            FontSize = 12,
+                            Margin = new Thickness(5),
+                            Foreground = Brushes.DarkSlateBlue
+                        };
+                        stackPanelRight.Children.Add(namePokemon);
+                        var imagePokemon = new Image
+                        {
+                            Source = new BitmapImage(new Uri(monster.ImageUrl)),
+                            Height = 75, // Ajustez la taille selon vos besoins
+                            Margin = new Thickness(5)
+                        };
+                        stackPanelRight.Children.Add(imagePokemon);
+
                         foreach (var spell in monsterSpells)
                         {
                             var spellTextBlock = new TextBlock
                             {
                                 Text = $"Spell : {spell.Name}, Damage : {spell.Damage}",
                                 FontSize = 7,
-                                Margin = new Thickness(5, 0, 5, 0),
+                                Margin = new Thickness(5),
                                 Foreground = Brushes.DarkSlateBlue
                             };
-                            stackPanel.Children.Add(spellTextBlock);
+                            stackPanelRight.Children.Add(spellTextBlock);
                         }
                     }
                     else
@@ -121,15 +144,18 @@ namespace WpfApp1.MVVM.View
                         {
                             Text = "Aucun sort disponible",
                             FontSize = 7,
-                            Margin = new Thickness(5, 0, 5, 0),
+                            Margin = new Thickness(5),
                             Foreground = Brushes.Gray
                         };
-                        stackPanel.Children.Add(noSpellsTextBlock);
+                        stackPanelRight.Children.Add(noSpellsTextBlock);
                     }
-                    button.Content = stackPanel;
+                    //RightPanelSpells.Children.Clear();
+                    RightPanelSpells.Children.Add(stackPanelRight);
+
+                    button.Content = stackPanelLeft;
                     ImageStackPanel.Children.Add(button);
 
-                    
+
                 }
             }
             else
