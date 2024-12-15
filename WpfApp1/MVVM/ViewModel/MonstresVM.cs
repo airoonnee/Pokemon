@@ -89,6 +89,41 @@ namespace WpfApp1.MVVM.ViewModel
                 throw; // Ré-élévation pour gestion en amont
             }
         }
+        // Fonction pour obtenir un monstre aléatoire
+        public static Monster GetRandomMonster()
+        {
+            var monsters = DisplayMonsterImages(); // Récupérer la liste des monstres
+            if (monsters == null || !monsters.Any())
+            {
+                throw new InvalidOperationException("Aucun monstre disponible pour la sélection.");
+            }
+
+            // Sélectionner un monstre au hasard
+            var random = new Random();
+            var randomMonster = monsters[random.Next(monsters.Count)];
+
+            // Convertir le tuple en un objet Monster
+            var monsterSpells = DataSpell.DisplaySpell()
+                .Where(s => randomMonster.Spells.Contains(s.Id))
+                .Select(s => new Spell
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Damage = s.Damage,
+                    Description = s.Description
+                })
+                .ToList();
+
+            // Retourner un objet Monster
+            return new Monster
+            {
+                Id = randomMonster.Id,
+                Name = randomMonster.Name,
+                Health = randomMonster.Health,
+                ImageUrl = randomMonster.ImageUrl,
+                Spell = monsterSpells
+            };
+        }
 
 
     }

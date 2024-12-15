@@ -50,7 +50,7 @@ namespace WpfApp1.MVVM.View
                     var nameTextBlock = new TextBlock
                     {
                         Text = spell.Name,
-                        FontSize = 9,
+                        FontSize = 14,
                         FontWeight = FontWeights.Bold,
                         Margin = new Thickness(0, 5, 0, 5),
                         HorizontalAlignment = HorizontalAlignment.Center
@@ -60,7 +60,7 @@ namespace WpfApp1.MVVM.View
                     var damageTextBlock = new TextBlock
                     {
                         Text = $"Damage: {spell.Damage}",
-                        FontSize = 7,
+                        FontSize = 10,
                         Margin = new Thickness(0, 0, 0, 5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
@@ -70,7 +70,7 @@ namespace WpfApp1.MVVM.View
                     var descriptionTextBlock = new TextBlock
                     {
                         Text = spell.Description,
-                        FontSize = 7,
+                        FontSize = 10,
                         TextWrapping = TextWrapping.Wrap,
                         Margin = new Thickness(0, 0, 0, 5),
                         HorizontalAlignment = HorizontalAlignment.Center
@@ -79,6 +79,7 @@ namespace WpfApp1.MVVM.View
                     border.Child = spellPanel;
 
                     // Ajouter le conteneur au ItemsControl
+                    //SpellsItemsControl.Items.Add(spellPanel);
                     SpellsWrapPanel.Children.Add(border);
                 }
             }
@@ -88,7 +89,7 @@ namespace WpfApp1.MVVM.View
                 var noSpellsTextBlock = new TextBlock
                 {
                     Text = "Aucun sort disponible.",
-                    FontSize = 8,
+                    FontSize = 10,
                     FontWeight = FontWeights.Bold,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(10)

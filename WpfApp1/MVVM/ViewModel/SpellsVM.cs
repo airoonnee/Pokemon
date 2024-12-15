@@ -36,7 +36,7 @@ namespace WpfApp1.MVVM.ViewModel
             }
         }
 
-        public static List<(int Id, string Name, int Damage, string Description)> DisplaySpell()
+        public static List<(int Id, string Name, int Damage, string Description, List<string> Monsters)> DisplaySpell()
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -48,7 +48,14 @@ namespace WpfApp1.MVVM.ViewModel
             {
                 // Récupérer les noms et URL d'images des monstres
                 var spells = context.Spell
-                    .Select(m => new { m.Id, m.Name, m.Damage, m.Description })
+                    .Select(s => new { 
+                        s.Id, 
+                        s.Name, 
+                        s.Damage, 
+                        s.Description,
+                        Monsters = s.Monster.Select(m => m.Name).ToList() // Extraire les noms des monstres associés
+
+                    })
                     .ToList();
 
                 if (!spells.Any())
@@ -64,7 +71,7 @@ namespace WpfApp1.MVVM.ViewModel
                 //}
 
                 // Retourner une liste de tuples contenant le nom et l'URL de l'image
-                return spells.Select(m => (m.Id, m.Name, m.Damage, m.Description)).ToList();
+                return spells.Select(s => (s.Id, s.Name, s.Damage, s.Description, s.Monsters)).ToList();
             }
             catch (SqlException sqlEx)
             {

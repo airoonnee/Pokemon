@@ -23,13 +23,10 @@
         <!-- Barre de tri par Pokémon -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Center" Width="118">
             <TextBlock Text="Filtrer par Pokémon : " VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <!-- <ComboBox Width="200" Name="PokemonFilterComboBox" SelectionChanged="OnPokemonFilterChanged">
-                 Les items peuvent être liés via DataBinding
+            <ComboBox Name="MonsterFilterComboBox" Width="200" > <!-- SelectionChanged="OnMonsterFilterChanged"> -->
                 <ComboBoxItem Content="Tous" IsSelected="True"/>
-                <ComboBoxItem Content="Pokémon 1"/>
-                <ComboBoxItem Content="Pokémon 2"/>
-                <ComboBoxItem Content="Pokémon 3"/>
-            </ComboBox> -->
+                <!-- Les items seront ajoutés dynamiquement -->
+            </ComboBox>
         </StackPanel>
 
         <!-- ScrollViewer pour afficher les sorts -->

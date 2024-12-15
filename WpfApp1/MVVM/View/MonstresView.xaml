@@ -26,8 +26,8 @@
         </ScrollViewer>
 
         <!-- Section droite : vide -->
-        <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="20" VerticalAlignment="Top">
-            <StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="20" VerticalAlignment="Top">
+            
                 <!-- <TextBlock Text="Pokemon Details" FontSize="20" FontWeight="Bold" 
                            HorizontalAlignment="Center" Margin="10" />
 
@@ -36,9 +36,9 @@
 
                 <TextBlock Text="Spells:" FontSize="14" FontWeight="Bold" 
                            HorizontalAlignment="Center" Margin="20,10,20,10" /> -->
-                <StackPanel x:Name="RightPanelSpells" HorizontalAlignment="Center" Margin="20" />
-            </StackPanel>
+                <StackPanel x:Name="RightPanelSpells" HorizontalAlignment="Center" Margin="5"/>
+            
 
-        </ScrollViewer>
+        </StackPanel>
     </Grid>
 </UserControl>

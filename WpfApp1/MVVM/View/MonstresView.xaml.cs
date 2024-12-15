@@ -74,6 +74,12 @@ namespace WpfApp1.MVVM.View
                         ImageUrl = tupleMonster.ImageUrl,
                         Spell = monsterSpells  // Associer les sorts
                     };
+                    //var border = new Border
+                    //{
+                    //    BorderBrush = Brushes.Black,
+                    //    BorderThickness = new Thickness(1), // Correction : utilisation de Thickness pour la largeur de la bordure
+                    //    Margin = new Thickness(2)
+                    //};
                     // Créer un bouton
                     var button = new Button
                     {
@@ -85,16 +91,37 @@ namespace WpfApp1.MVVM.View
                     {
                         if (sender is Button clickedButton && clickedButton.Tag is Monster selectedMonster)
                         {
-                            var spellDetails = selectedMonster.Spell
-                                .Select(spell => $"Nom: {spell.Name}, Dégâts: {spell.Damage}")
-                                .ToList();
+                            // Masquer tous les panels dans RightPanelSpells
+                            foreach (var child in RightPanelSpells.Children)
+                            {
+                                if (child is StackPanel panel)
+                                {
+                                    panel.Visibility = Visibility.Collapsed;
+                                }
+                            }
 
-                            string message = spellDetails.Any()
-                                ? string.Join("\n", spellDetails)
-                                : "Aucun sort disponible.";
+                            // Afficher uniquement le panel correspondant au monstre
+                            var matchingPanel = RightPanelSpells.Children
+                                .OfType<StackPanel>()
+                                .FirstOrDefault(panel => panel.Tag is Monster monster && monster.Id == selectedMonster.Id);
 
-                            MessageBox.Show($"Sorts du monstre {selectedMonster.Name}, HP : {selectedMonster.Health}:\n{message}");
+                            if (matchingPanel != null)
+                            {
+                                matchingPanel.Visibility = Visibility.Visible;
+                            }
                         }
+                        //if (sender is Button clickedButton && clickedButton.Tag is Monster selectedMonster)
+                        //{
+                        //    var spellDetails = selectedMonster.Spell
+                        //        .Select(spell => $"Nom: {spell.Name}, Dégâts: {spell.Damage}")
+                        //        .ToList();
+
+                        //    string message = spellDetails.Any()
+                        //        ? string.Join("\n", spellDetails)
+                        //        : "Aucun sort disponible.";
+
+                        //    MessageBox.Show($"Sorts du monstre {selectedMonster.Name}, HP : {selectedMonster.Health}:\n{message}");
+                        //}
                     };
 
 
@@ -105,7 +132,9 @@ namespace WpfApp1.MVVM.View
                     };
                     var stackPanelRight = new StackPanel
                     {
-                        Orientation = Orientation.Vertical
+                        Orientation = Orientation.Vertical,
+                        Tag = monster,
+                        Visibility = Visibility.Collapsed
                     };
 
                     // Ajouter l'image au StackPanel
@@ -115,7 +144,7 @@ namespace WpfApp1.MVVM.View
                         var image = new Image
                         {
                             Source = new BitmapImage(new Uri(monster.ImageUrl)),
-                            Height = 75, // Ajustez la taille selon vos besoins
+                            Height = 100, // Ajustez la taille selon vos besoins
                             Margin = new Thickness(5)
                         };
                         stackPanelLeft.Children.Add(image);
@@ -129,7 +158,7 @@ namespace WpfApp1.MVVM.View
                     var nameTextBlock = new TextBlock
                     {
                         Text = monster.Name,
-                        FontSize = 8,
+                        FontSize = 12,
                         Margin = new Thickness(5),
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
@@ -148,37 +177,74 @@ namespace WpfApp1.MVVM.View
                         var namePokemon = new TextBlock
                         {
                             Text = $"{monster.Name}",
-                            FontSize = 12,
+                            FontSize = 16,
                             Margin = new Thickness(5),
-                            Foreground = Brushes.DarkSlateBlue
+                            Foreground = Brushes.DarkSlateBlue,
                         };
                         stackPanelRight.Children.Add(namePokemon);
                         var imagePokemon = new Image
                         {
                             Source = new BitmapImage(new Uri(monster.ImageUrl)),
-                            Height = 75, // Ajustez la taille selon vos besoins
+                            Height = 120, // Ajustez la taille selon vos besoins
                             Margin = new Thickness(5)
                         };
                         stackPanelRight.Children.Add(imagePokemon);
-
+                        var hp = new TextBlock
+                        {
+                            Text = $"Health : {monster.Health}",
+                            FontSize = 16,
+                            Margin = new Thickness(5),
+                            Foreground = Brushes.DarkSlateBlue,
+                        };
+                        stackPanelRight.Children.Add(hp);
                         foreach (var spell in monsterSpells)
                         {
                             var spellTextBlock = new TextBlock
                             {
                                 Text = $"Spell : {spell.Name}, Damage : {spell.Damage}",
-                                FontSize = 7,
-                                Margin = new Thickness(5),
+                                FontSize = 14,
+                                Margin = new Thickness(2),
                                 Foreground = Brushes.DarkSlateBlue
                             };
-                            stackPanelRight.Children.Add(spellTextBlock);
+                            var border = new Border // Créez une nouvelle instance de Border ici
+                            {
+                                BorderBrush = Brushes.Black,
+                                BorderThickness = new Thickness(1),
+                                Margin = new Thickness(2),
+                                Child = spellTextBlock // Ajoutez le TextBlock à ce Border
+                            };
+                            stackPanelRight.Children.Add(border);
                         }
+                        var playGame = new Button
+                        {
+                            Content = "PLAY GAME",
+                            Margin = new Thickness(5)
+                            //HorizontalAlignment = HorizontalAlignment.Stretch,
+                        };
+                        playGame.Click += (sender, e) =>
+                        {
+                            if (monster != null)
+                            {
+                                // Sélectionner un monstre aléatoire (remplacez par votre logique)
+                                var randomMonster = DataMonster.GetRandomMonster();
+
+                                // Instancier FightView avec les deux monstres
+                                var fightView = new FightView(monster, randomMonster);
+
+                                // Afficher FightView
+                                fightView.ShowDialog();
+                            }
+                        };
+
+
+                        stackPanelRight.Children.Add(playGame);
                     }
                     else
                     {
                         var noSpellsTextBlock = new TextBlock
                         {
                             Text = "Aucun sort disponible",
-                            FontSize = 7,
+                            FontSize = 14,
                             Margin = new Thickness(5),
                             Foreground = Brushes.Gray
                         };

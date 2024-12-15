@@ -1,0 +1,40 @@
+﻿<Window x:Class="WpfApp1.MVVM.View.FightView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignHeight="450" d:DesignWidth="800"
+        Title="Fight">
+    <Grid>
+        <!-- Disposition en deux colonnes pour afficher deux monstres -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Monstre de gauche (joueur) -->
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
+            <!-- Image du monstre -->
+            <Image x:Name="PlayerMonsterImage" Width="200" Height="200" Margin="10" />
+            <!-- Nom du monstre -->
+            <TextBlock x:Name="PlayerMonsterName" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
+            <!-- Points de vie du monstre -->
+            <TextBlock x:Name="PlayerMonsterHealth" FontSize="16" HorizontalAlignment="Center" Margin="5" />
+            <!-- Liste des sorts -->
+            <StackPanel x:Name="PlayerMonsterSpells" Margin="10">
+                <TextBlock Text="Spells:" FontSize="16" FontWeight="Bold" Margin="5" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Monstre de droite (adversaire aléatoire) -->
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
+            <!-- Image du monstre -->
+            <Image x:Name="OpponentMonsterImage" Width="200" Height="200" Margin="10" />
+            <!-- Nom du monstre -->
+            <TextBlock x:Name="OpponentMonsterName" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
+            <!-- Points de vie du monstre -->
+            <TextBlock x:Name="OpponentMonsterHealth" FontSize="16" HorizontalAlignment="Center" Margin="5" />
+        </StackPanel>
+    </Grid>
+</Window>
