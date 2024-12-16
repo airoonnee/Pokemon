@@ -121,6 +121,7 @@ namespace WpfApp1.MVVM.ViewModel
                 Name = randomMonster.Name,
                 Health = randomMonster.Health,
                 ImageUrl = randomMonster.ImageUrl,
+                //MaxHealth = randomMonster.Health,
                 Spell = monsterSpells
             };
         }

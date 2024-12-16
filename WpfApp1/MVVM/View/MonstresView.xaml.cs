@@ -226,10 +226,10 @@ namespace WpfApp1.MVVM.View
                             if (monster != null)
                             {
                                 // Sélectionner un monstre aléatoire (remplacez par votre logique)
-                                var randomMonster = DataMonster.GetRandomMonster();
+                                //var randomMonster = DataMonster.GetRandomMonster();
 
                                 // Instancier FightView avec les deux monstres
-                                var fightView = new FightView(monster, randomMonster, monster.Health, randomMonster.Health);
+                                var fightView = new FightView(monster, monster.Health);
 
                                 // Afficher FightView
                                 fightView.ShowDialog();
