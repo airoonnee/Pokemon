@@ -229,7 +229,7 @@ namespace WpfApp1.MVVM.View
                                 var randomMonster = DataMonster.GetRandomMonster();
 
                                 // Instancier FightView avec les deux monstres
-                                var fightView = new FightView(monster, randomMonster);
+                                var fightView = new FightView(monster, randomMonster, monster.Health, randomMonster.Health);
 
                                 // Afficher FightView
                                 fightView.ShowDialog();

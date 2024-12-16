@@ -4,37 +4,70 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        d:DesignHeight="450" d:DesignWidth="800"
+        d:DesignHeight="550" d:DesignWidth="800"
         Title="Fight">
     <Grid>
-        <!-- Disposition en deux colonnes pour afficher deux monstres -->
+        <!-- Définition des lignes pour organiser le contenu -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Pour les boutons et le compteur -->
+            <RowDefinition Height="*" />
+            <!-- Pour les monstres -->
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!-- Section du haut : compteur et boutons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
+            <!-- Compteur -->
+            <TextBlock x:Name="RoundCounter" Text="Manche : 1" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,20,0" />
+            <!-- Boutons -->
+            <Button x:Name="RestartButton" Content="Relancer" FontSize="14" Width="100" Height="30" Margin="0,0,10,0" />
+            <Button x:Name="QuitButton" Content="Quitter" FontSize="14" Width="100" Height="30" />
+        </StackPanel>
+
         <!-- Monstre de gauche (joueur) -->
-        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
+        <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
             <!-- Image du monstre -->
-            <Image x:Name="PlayerMonsterImage" Width="200" Height="200" Margin="10" />
+            <Image x:Name="PlayerMonsterImage" Width="150" Height="150" Margin="5" />
             <!-- Nom du monstre -->
             <TextBlock x:Name="PlayerMonsterName" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
             <!-- Points de vie du monstre -->
             <TextBlock x:Name="PlayerMonsterHealth" FontSize="16" HorizontalAlignment="Center" Margin="5" />
+            <ProgressBar x:Name="PlayerMonsterHealthBar" Height="20" Width="200" Margin="5" Maximum="100" Value="100">
+                <ProgressBar.Style>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="Foreground" Value="Green" />
+                        <Setter Property="Background" Value="Gray" />
+                    </Style>
+                </ProgressBar.Style>
+            </ProgressBar>
             <!-- Liste des sorts -->
-            <StackPanel x:Name="PlayerMonsterSpells" Margin="10">
+            <StackPanel>
                 <TextBlock Text="Spells:" FontSize="16" FontWeight="Bold" Margin="5" />
+                <UniformGrid x:Name="PlayerMonsterSpells" Margin="10" Columns="2" />
+
             </StackPanel>
         </StackPanel>
 
         <!-- Monstre de droite (adversaire aléatoire) -->
-        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
             <!-- Image du monstre -->
-            <Image x:Name="OpponentMonsterImage" Width="200" Height="200" Margin="10" />
+            <Image x:Name="OpponentMonsterImage" Width="150" Height="150" Margin="5" />
             <!-- Nom du monstre -->
             <TextBlock x:Name="OpponentMonsterName" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" />
             <!-- Points de vie du monstre -->
             <TextBlock x:Name="OpponentMonsterHealth" FontSize="16" HorizontalAlignment="Center" Margin="5" />
+            <ProgressBar x:Name="OpponentMonsterHealthBar" Height="20" Width="200" Margin="5" Maximum="100" Value="100">
+                <ProgressBar.Style>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="Foreground" Value="Green" />
+                        <Setter Property="Background" Value="Gray" />
+                    </Style>
+                </ProgressBar.Style>
+            </ProgressBar>
         </StackPanel>
     </Grid>
 </Window>
