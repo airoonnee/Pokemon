@@ -89,13 +89,15 @@ namespace WpfApp1.MVVM.View
 
                     var stackPanelLeft = new StackPanel
                     {
-                        Orientation = Orientation.Vertical
+                        Orientation = Orientation.Vertical,
+                        Background = Brushes.Transparent
                     };
                     var stackPanelRight = new StackPanel
                     {
                         Orientation = Orientation.Vertical,
                         Tag = monster,
-                        Visibility = Visibility.Collapsed
+                        Visibility = Visibility.Collapsed,
+                        Background = Brushes.Transparent
                     };
 
                     try
@@ -129,7 +131,7 @@ namespace WpfApp1.MVVM.View
                             Text = $"{monster.Name}",
                             FontSize = 16,
                             Margin = new Thickness(5),
-                            Foreground = Brushes.DarkSlateBlue,
+                            Foreground = Brushes.Black,
                         };
                         stackPanelRight.Children.Add(namePokemon);
                         var imagePokemon = new Image
@@ -144,7 +146,7 @@ namespace WpfApp1.MVVM.View
                             Text = $"Health : {monster.Health}",
                             FontSize = 16,
                             Margin = new Thickness(5),
-                            Foreground = Brushes.DarkSlateBlue,
+                            Foreground = Brushes.Black,
                         };
                         stackPanelRight.Children.Add(hp);
                         foreach (var spell in monsterSpells)
@@ -154,7 +156,8 @@ namespace WpfApp1.MVVM.View
                                 Text = $"Spell : {spell.Name}, Damage : {spell.Damage}",
                                 FontSize = 14,
                                 Margin = new Thickness(2),
-                                Foreground = Brushes.DarkSlateBlue
+                                Foreground = Brushes.DarkSlateBlue,
+                                Background = Brushes.White
                             };
                             var border = new Border 
                             {

@@ -41,10 +41,10 @@ namespace WpfApp1.MVVM.View
             PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
             PlayerMonsterHealthBar.Maximum = playerMonster.InitialHealth;
 
-            PlayerMonsterHealthBar.Value = playerMonster.Health; 
+            PlayerMonsterHealthBar.Value = playerMonster.Health;
             PlayerMonsterImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(playerMonster.ImageUrl));
 
-            PlayerMonsterSpells.Children.Clear(); 
+            PlayerMonsterSpells.Children.Clear();
             if (playerMonster.Spell != null)
             {
                 foreach (var spell in playerMonster.Spell)
@@ -68,29 +68,29 @@ namespace WpfApp1.MVVM.View
                             PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
                             PlayerMonsterHealthBar.Value = playerMonster.Health;
                         }
-                        
 
-                            opponentMonster.Health -= spell.Damage;
+
+                        opponentMonster.Health -= spell.Damage;
                         MessageBox.Show($"-{spell.Damage} HP Pour l'adverser");
 
                         if (opponentMonster.Health <= 0)
-                            {
-                                MessageBox.Show($"Manche suivante !");
-                                hpMultiplier += 0.1;
-                                damageMultiplier += 0.05;
-                                opponentMonster = GenerateImprovedMonster(DataMonster.GetRandomMonster());
+                        {
+                            MessageBox.Show($"Manche suivante !");
+                            hpMultiplier += 0.1;
+                            damageMultiplier += 0.05;
+                            opponentMonster = GenerateImprovedMonster(DataMonster.GetRandomMonster());
 
-                                currentRound++;
-                                RoundCounter.Text = $"Manche : {currentRound}";
+                            currentRound++;
+                            RoundCounter.Text = $"Manche : {currentRound}";
 
-                                InitializeOpponent(opponentMonster);
-                            }
-                            else
-                            {
-                                OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
-                                OpponentMonsterHealthBar.Value = opponentMonster.Health;
-                            }
-                            StartOpponentAttackTimer(playerMonster, opponentMonster);                        
+                            InitializeOpponent(opponentMonster);
+                        }
+                        else
+                        {
+                            OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
+                            OpponentMonsterHealthBar.Value = opponentMonster.Health;
+                        }
+                        StartOpponentAttackTimer(playerMonster, opponentMonster);
                     };
                     PlayerMonsterSpells.Children.Add(spellButton);
                 }
@@ -101,14 +101,14 @@ namespace WpfApp1.MVVM.View
         {
             var improvedMonster = new Monster
             {
-                Name = baseMonster.Name, 
+                Name = baseMonster.Name,
                 InitialHealth = (int)(baseMonster.InitialHealth * hpMultiplier),
                 Health = (int)(baseMonster.Health * hpMultiplier),
-                ImageUrl = baseMonster.ImageUrl, 
+                ImageUrl = baseMonster.ImageUrl,
                 Spell = baseMonster.Spell.Select(spell => new Spell
                 {
                     Name = spell.Name,
-                    Damage = (int)(spell.Damage * damageMultiplier) 
+                    Damage = (int)(spell.Damage * damageMultiplier)
                 }).ToList()
             };
             return improvedMonster;
@@ -127,7 +127,7 @@ namespace WpfApp1.MVVM.View
             OpponentMonsterName.Text = opponentMonster.Name;
             OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
             OpponentMonsterHealthBar.Maximum = opponentMonster.InitialHealth;
-            OpponentMonsterHealthBar.Value = opponentMonster.Health; 
+            OpponentMonsterHealthBar.Value = opponentMonster.Health;
             OpponentMonsterImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(opponentMonster.ImageUrl));
         }
 
@@ -141,7 +141,7 @@ namespace WpfApp1.MVVM.View
             opponentAttackTimer.Tick += (s, e) =>
             {
                 OpponentAttack();
-                opponentAttackTimer.Stop(); 
+                opponentAttackTimer.Stop();
             };
         }
         private void OpponentAttack()
@@ -158,17 +158,17 @@ namespace WpfApp1.MVVM.View
                     OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
                     OpponentMonsterHealthBar.Value = opponentMonster.Health;
                 }
-                
-                    playerMonster.Health -= randomSpell.Damage;
+
+                playerMonster.Health -= randomSpell.Damage;
                 MessageBox.Show($"-{randomSpell.Damage} HP Pour toi");
 
                 if (playerMonster.Health <= 0)
-                    {
-                        MessageBox.Show($"BRAVO\nTu es arriver a la Manche : {currentRound}");
-                        this.Close();
-                    }
-                    PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
-                    PlayerMonsterHealthBar.Value = playerMonster.Health;                
+                {
+                    MessageBox.Show($"BRAVO\nTu es arriver a la Manche : {currentRound}");
+                    this.Close();
+                }
+                PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
+                PlayerMonsterHealthBar.Value = playerMonster.Health;
             }
             else
             {
@@ -179,8 +179,8 @@ namespace WpfApp1.MVVM.View
         }
         private void StartOpponentAttackTimer(Monster playerMonster, Monster opponentMonster)
         {
-            opponentAttackTimer?.Stop(); 
-            opponentAttackTimer?.Start(); 
+            opponentAttackTimer?.Stop();
+            opponentAttackTimer?.Start();
         }
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
