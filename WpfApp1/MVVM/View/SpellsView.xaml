@@ -8,13 +8,24 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF1E90FF" Offset="0" />
+                <!-- Pokémon Blue -->
+                <GradientStop Color="#FFFFD700" Offset="0.5" />
+                <!-- Pokémon Yellow -->
+                <GradientStop Color="#FFDC143C" Offset="1" />
+                <!-- Pokémon Red -->
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="Auto" MinHeight="35.96" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Spells" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+        <TextBlock Text="Spells" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"
+                               FontWeight="Bold" Foreground="White"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Center">
             <TextBlock Text="Filtrer par Pokémon : " VerticalAlignment="Center" Margin="0,0,5,0"/>

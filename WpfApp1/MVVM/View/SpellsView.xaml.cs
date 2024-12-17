@@ -45,7 +45,8 @@ namespace WpfApp1.MVVM.View
                     };
                     var spellPanel = new StackPanel
                     {
-                        Orientation = Orientation.Vertical
+                        Orientation = Orientation.Vertical,
+                        Background = Brushes.White
                     };
 
                     var nameTextBlock = new TextBlock
