@@ -54,7 +54,6 @@ namespace WpfApp1.MVVM.View
                     //string spellsText = string.Join(", ", monster.Spells);
 
                     //MessageBox.Show(spellsText);
-
                     var monsterSpells = spells
                     .Where(s => tupleMonster.Spells.Contains(s.Id)) // Associer les sorts par Id
                     .Select(s => new Spell // Conversion explicite en objets Spell
@@ -71,9 +70,11 @@ namespace WpfApp1.MVVM.View
                         Id = tupleMonster.Id,
                         Name = tupleMonster.Name,
                         Health = tupleMonster.Health,
+                        InitialHealth = tupleMonster.Health,
                         ImageUrl = tupleMonster.ImageUrl,
                         Spell = monsterSpells  // Associer les sorts
                     };
+
                     //var border = new Border
                     //{
                     //    BorderBrush = Brushes.Black,
@@ -229,7 +230,7 @@ namespace WpfApp1.MVVM.View
                                 //var randomMonster = DataMonster.GetRandomMonster();
 
                                 // Instancier FightView avec les deux monstres
-                                var fightView = new FightView(monster, monster.Health);
+                                var fightView = new FightView(monster);
 
                                 // Afficher FightView
                                 fightView.ShowDialog();

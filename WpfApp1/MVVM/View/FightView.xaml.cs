@@ -13,28 +13,34 @@ namespace WpfApp1.MVVM.View
     {
         private DispatcherTimer opponentAttackTimer;
         private Monster opponentMonster;
-        private int MaxHealthOpponentMonster;
+        private int currentRound = 1;
+        private Monster playerMonster;
+        private List<Button> spellButtons = new List<Button>();
+        private double hpMultiplier = 1;
+        private double damageMultiplier = 1;
 
-        public FightView(Monster playerMonster, int MaxHealthPlayerMonster)
+
+
+        public FightView(Monster playerMonster)
         {
             InitializeComponent();
-            InitializeFight(playerMonster, MaxHealthPlayerMonster);
+            InitializeFight(playerMonster);
             InitializeOpponentAttackTimer();
         }
-        public void InitializeFight(Monster playerMonster, int MaxHealthPlayerMonster)
+        public void InitializeFight(Monster PlayerMonster)
         {
             opponentMonster = DataMonster.GetRandomMonster();
-            MaxHealthOpponentMonster = opponentMonster.Health;
+            playerMonster = PlayerMonster;
             // Réinitialiser les HP à chaque lancement ou relancement
-            playerMonster.Health = MaxHealthPlayerMonster;
-            opponentMonster.Health = MaxHealthOpponentMonster;
+            playerMonster.Health = playerMonster.InitialHealth;
+            opponentMonster.Health = opponentMonster.InitialHealth;
 
-            //RoundCounter.Text = $"Manche : {currentRound}";
+            RoundCounter.Text = $"Manche : {currentRound}";
 
             // Initialiser les données pour le monstre de gauche
             PlayerMonsterName.Text = playerMonster.Name;
             PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
-            PlayerMonsterHealthBar.Maximum = MaxHealthPlayerMonster;
+            PlayerMonsterHealthBar.Maximum = playerMonster.InitialHealth;
 
             PlayerMonsterHealthBar.Value = playerMonster.Health; // Mise à jour de la barre de vie
             PlayerMonsterImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(playerMonster.ImageUrl));
@@ -52,56 +58,99 @@ namespace WpfApp1.MVVM.View
                         Margin = new Thickness(5)
                         //HorizontalAlignment = HorizontalAlignment.Stretch
                     };
+                    spellButtons.Add(spellButton);
+
 
                     // Ajoutez un événement clic au bouton
                     spellButton.Click += (sender, e) =>
                     {
+                        ToggleSpellButtons(false);
+                        MessageBox.Show($"dega : {spell.Damage}\n playerHP : {playerMonster.Health}");
                         // Réduire la santé de l'adversaire
-                        opponentMonster.Health -= spell.Damage;
-                        if (opponentMonster.Health <= 0)
+                        if (spell.Damage == 0 && playerMonster.Health <= playerMonster.InitialHealth - 20)
                         {
-                            MessageBox.Show($"You defeated {opponentMonster.Name}!");
-                            opponentMonster = DataMonster.GetRandomMonster();
-                            MaxHealthOpponentMonster = opponentMonster.Health;
-                            InitializeOpponent(opponentMonster, MaxHealthOpponentMonster);
+                            MessageBox.Show("test HP");
+                            playerMonster.Health += 20;
+                            PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
+                            PlayerMonsterHealthBar.Value = playerMonster.Health;
                         }
-                        else
-                        {
-                            UpdateOpponentHealth(opponentMonster);
-                        }
-                        StartOpponentAttackTimer(playerMonster, opponentMonster);
+                        
 
-                        //if (opponentMonster.Health < 0) opponentMonster.Health = 0;
+                            opponentMonster.Health -= spell.Damage;
+                            if (opponentMonster.Health <= 0)
+                            {
+                                MessageBox.Show($"You defeated {opponentMonster.Name}!");
+                                hpMultiplier += 0.1;
+                                damageMultiplier += 0.05;
+                                opponentMonster = GenerateImprovedMonster(DataMonster.GetRandomMonster());
 
-                        //// Mettre à jour l'interface utilisateur
-                        //OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
-                        //OpponentMonsterHealthBar.Value = opponentMonster.Health;
+                                currentRound++;
+                                RoundCounter.Text = $"Manche : {currentRound}";
 
-                        //StartOpponentAttackTimer(playerMonster, opponentMonster);
+                                InitializeOpponent(opponentMonster);
+                            }
+                            else
+                            {
+                                OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
+                                OpponentMonsterHealthBar.Value = opponentMonster.Health;
+                            }
+                            StartOpponentAttackTimer(playerMonster, opponentMonster);
 
-                        // Logique à exécuter lorsqu'un sort est utilisé
-                        MessageBox.Show($"You used {spell.Name} dealing {spell.Damage} damage!\nadverse {opponentMonster.Health}");
+                            //if (opponentMonster.Health < 0) opponentMonster.Health = 0;
+
+                            //// Mettre à jour l'interface utilisateur
+                            //OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
+                            //OpponentMonsterHealthBar.Value = opponentMonster.Health;
+
+                            //StartOpponentAttackTimer(playerMonster, opponentMonster);
+
+                            // Logique à exécuter lorsqu'un sort est utilisé
+                            MessageBox.Show($"You used {spell.Name} dealing {spell.Damage} damage!\nadverse {opponentMonster.Health}");
+                        
                     };
 
                     // Ajouter le bouton à l'interface
                     PlayerMonsterSpells.Children.Add(spellButton);
                 }
             }
-            InitializeOpponent(opponentMonster, MaxHealthOpponentMonster);
+            InitializeOpponent(opponentMonster);
         }
-        private void InitializeOpponent(Monster opponentMonster, int MaxHealthOpponentMonster)
+        private Monster GenerateImprovedMonster(Monster baseMonster)
+        {
+            MessageBox.Show("amelioration");
+            // Cloner le monstre de base avec des stats améliorées
+            var improvedMonster = new Monster
+            {
+                Name = baseMonster.Name, // Conserve le nom ou génère un nom aléatoire
+                InitialHealth = (int)(baseMonster.InitialHealth * hpMultiplier),
+                Health = (int)(baseMonster.Health * hpMultiplier),
+                ImageUrl = baseMonster.ImageUrl, // Conserve l'image
+                Spell = baseMonster.Spell.Select(spell => new Spell
+                {
+                    Name = spell.Name,
+                    Damage = (int)(spell.Damage * damageMultiplier) // Améliore les dégâts des sorts
+                }).ToList()
+            };
+            MessageBox.Show("amelio fin");
+            return improvedMonster;
+        }
+
+        private void ToggleSpellButtons(bool isEnabled)
+        {
+            foreach (var button in spellButtons)
+            {
+                button.IsEnabled = isEnabled;
+            }
+        }
+
+        private void InitializeOpponent(Monster opponentMonster)
         {
             // Initialiser les données pour le monstre de droite
             OpponentMonsterName.Text = opponentMonster.Name;
             OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
-            OpponentMonsterHealthBar.Maximum = MaxHealthOpponentMonster;
+            OpponentMonsterHealthBar.Maximum = opponentMonster.InitialHealth;
             OpponentMonsterHealthBar.Value = opponentMonster.Health; // Mise à jour de la barre de vie
             OpponentMonsterImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(opponentMonster.ImageUrl));
-        }
-        private void UpdateOpponentHealth(Monster opponentMonster)
-        {
-            OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
-            OpponentMonsterHealthBar.Value = opponentMonster.Health;
         }
 
         private void InitializeOpponentAttackTimer()
@@ -157,17 +206,31 @@ namespace WpfApp1.MVVM.View
             {
                 var random = new Random();
                 var randomSpell = opponentMonster.Spell.ElementAt(random.Next(opponentMonster.Spell.Count));
-
-                // Reduce player's health
-                PlayerMonsterHealth.Text = $"Health: {opponentMonster.Health}";
-                PlayerMonsterHealthBar.Value = opponentMonster.Health;
-
-                MessageBox.Show($"{opponentMonster.Name} used {randomSpell.Name}, dealing {randomSpell.Damage} damage!");
+                if (randomSpell.Damage == 0 && opponentMonster.Health <= opponentMonster.InitialHealth - 20)
+                {
+                    opponentMonster.Health += 20;
+                    OpponentMonsterHealth.Text = $"Health: {opponentMonster.Health}";
+                    OpponentMonsterHealthBar.Value = opponentMonster.Health;
+                }
+                
+                    playerMonster.Health -= randomSpell.Damage;
+                    // Reduce player's health
+                    if (playerMonster.Health <= 0)
+                    {
+                        MessageBox.Show($"tu es arriver a la Manche : {currentRound}");
+                        this.Close();
+                    }
+                    PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
+                    PlayerMonsterHealthBar.Value = playerMonster.Health;
+                    MessageBox.Show($"{opponentMonster.Name} used {randomSpell.Name}, dealing {randomSpell.Damage} damage!");
+                
             }
             else
             {
                 MessageBox.Show("No valid opponent or spells available.");
             }
+            ToggleSpellButtons(true);
+
         }
         private void StartOpponentAttackTimer(Monster playerMonster, Monster opponentMonster)
         {
@@ -176,6 +239,22 @@ namespace WpfApp1.MVVM.View
         }
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
+            // Réinitialiser les HP et relancer le jeu
+            playerMonster.Health = playerMonster.InitialHealth;
+            opponentMonster.Health = opponentMonster.InitialHealth;
+            currentRound = 1;
+            RoundCounter.Text = $"Manche : {currentRound}";
+
+
+            PlayerMonsterHealth.Text = $"Health: {playerMonster.InitialHealth}";
+            PlayerMonsterHealthBar.Value = playerMonster.InitialHealth;
+
+            OpponentMonsterHealth.Text = $"Health: {opponentMonster.InitialHealth}";
+            OpponentMonsterHealthBar.Value = opponentMonster.InitialHealth;
+            opponentMonster = DataMonster.GetRandomMonster();
+            InitializeOpponent(opponentMonster);
+
+
             MessageBox.Show("Game restarted!");
             // Relancer le jeu (logique à ajouter si nécessaire)
         }
@@ -183,29 +262,29 @@ namespace WpfApp1.MVVM.View
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Game exited!");
-            Close();
+            this.Close();
         }
 
-        private void OpponentAttack(Monster playerMonster, Monster opponentMonster)
-        {
-            if (opponentMonster.Spell != null && opponentMonster.Spell.Any())
-            {
-                // Choisir un sort aléatoire
-                var random = new Random();
-                var randomSpell = opponentMonster.Spell.ElementAt(random.Next(opponentMonster.Spell.Count));
+        //private void OpponentAttack(Monster playerMonster, Monster opponentMonster)
+        //{
+        //    if (opponentMonster.Spell != null && opponentMonster.Spell.Any())
+        //    {
+        //        // Choisir un sort aléatoire
+        //        var random = new Random();
+        //        var randomSpell = opponentMonster.Spell.ElementAt(random.Next(opponentMonster.Spell.Count));
 
-                // Réduire la santé du joueur
-                playerMonster.Health -= randomSpell.Damage;
-                if (playerMonster.Health < 0) playerMonster.Health = 0;
+        //        // Réduire la santé du joueur
+        //        playerMonster.Health -= randomSpell.Damage;
+        //        if (playerMonster.Health < 0) playerMonster.Health = 0;
 
-                // Mettre à jour la barre de vie et le texte
-                PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
-                PlayerMonsterHealthBar.Value = playerMonster.Health;
+        //        // Mettre à jour la barre de vie et le texte
+        //        PlayerMonsterHealth.Text = $"Health: {playerMonster.Health}";
+        //        PlayerMonsterHealthBar.Value = playerMonster.Health;
 
-                // Message pour l'attaque de l'adversaire
-                MessageBox.Show($"{opponentMonster.Name} used {randomSpell.Name}, dealing {randomSpell.Damage} damage!");
-            }
-        }
+        //        // Message pour l'attaque de l'adversaire
+        //        MessageBox.Show($"{opponentMonster.Name} used {randomSpell.Name}, dealing {randomSpell.Damage} damage!");
+        //    }
+        //}
     }
 
 }

@@ -11,6 +11,8 @@ public partial class Monster
 
     public int Health { get; set; }
 
+    public int InitialHealth { get; set; } // Nouvelle propriété
+
     public string? ImageUrl { get; set; }
 
     public virtual ICollection<Player> Players { get; set; } = new List<Player>();
