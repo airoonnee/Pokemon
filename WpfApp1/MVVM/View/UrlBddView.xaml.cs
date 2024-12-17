@@ -33,12 +33,20 @@ namespace WpfApp1.MVVM.View
         private void ValidateUrlButton_Click(object sender, RoutedEventArgs e)
         {
             var connectionString = UrlTextBox.Text;
-            DataLogin.Initialize(connectionString);
-            DataSignup.Initialize(connectionString);
-            DataMonster.Initialize(connectionString);
-            DataSpell.Initialize(connectionString);
+            bool isLoginInitialized = DataLogin.Initialize(connectionString);
+            bool isSignupInitialized = DataSignup.Initialize(connectionString);
+            bool isMonsterInitialized = DataMonster.Initialize(connectionString);
+            bool isSpellInitialized = DataSpell.Initialize(connectionString);
 
-            MessageBox.Show("Connection Réussi !");
+            if (isLoginInitialized && isSignupInitialized && isMonsterInitialized && isSpellInitialized)
+            {
+                MessageBox.Show("Connection Réussi !");
+            }
+            else
+            {
+                MessageBox.Show("Erreur de connexion, veuillez vérifier l'URL de la base de données.");
+            }
+
         }
     }
 }

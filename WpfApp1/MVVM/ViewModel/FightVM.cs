@@ -10,7 +10,6 @@ namespace WpfApp1.MVVM.ViewModel
         public int MaxHealthPlayerMonster { get; private set; }
         public int MaxHealthOpponentMonster { get; private set; }
 
-        // Constructeur de la classe FightVM
         public FightVM(Monster playerMonster, Monster opponentMonster, int maxHealthPlayerMonster, int maxHealthOpponentMonster)
         {
             PlayerMonster = playerMonster;

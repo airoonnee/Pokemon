@@ -16,12 +16,11 @@ namespace WpfApp1.MVVM.ViewModel
     {
         private static string _connectionString;
 
-        public static void Initialize(string connectionString)
+        public static bool Initialize(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                MessageBox.Show("Veuillez saisir une URL valide.");
-                return;
+                return false;
             }
             _connectionString = connectionString;
 
@@ -29,14 +28,22 @@ namespace WpfApp1.MVVM.ViewModel
             try
             {
                 context.Database.EnsureCreated();
+                if (context.Database.CanConnect())
+                {
+                    return true;  
+                }
+                else
+                {
+                    return false;  
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur lors de la mise à jour : {ex.Message}");
+                return false;
             }
         }
 
-        public static List<(int Id, string Name, int Damage, string Description, List<string> Monsters)> DisplaySpell()
+        public static List<(int Id, string Name, int Damage, string Description, List<int> MonstersID)> DisplaySpell()
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -46,14 +53,13 @@ namespace WpfApp1.MVVM.ViewModel
             using var context = new ExerciceMonsterContext(_connectionString);
             try
             {
-                // Récupérer les noms et URL d'images des monstres
                 var spells = context.Spell
                     .Select(s => new { 
                         s.Id, 
                         s.Name, 
                         s.Damage, 
                         s.Description,
-                        Monsters = s.Monster.Select(m => m.Name).ToList() // Extraire les noms des monstres associés
+                        MonstersID = s.Monster.Select(m => m.Id).ToList() // Extraire les noms des monstres associés
 
                     })
                     .ToList();
@@ -61,27 +67,22 @@ namespace WpfApp1.MVVM.ViewModel
                 if (!spells.Any())
                 {
                     MessageBox.Show("Aucun monstre trouvé.");
-                    return null;
+                    return new List<(int, string, int, string?, List<int>)>(); // Liste vide
                 }
 
-                // Afficher les noms et URLs des images pour vérification (peut être retiré en production)
-                //foreach (var spell in spells)
-                //{
-                //    MessageBox.Show($"Name: {spell.Name}, Damage: {spell.Damage}");
-                //}
-
-                // Retourner une liste de tuples contenant le nom et l'URL de l'image
-                return spells.Select(s => (s.Id, s.Name, s.Damage, s.Description, s.Monsters)).ToList();
+                return spells
+                .Select(s => (s.Id, s.Name, s.Damage, s.Description, s.MonstersID))
+                .ToList();
             }
             catch (SqlException sqlEx)
             {
                 MessageBox.Show($"Erreur SQL lors de la récupération des données : {sqlEx.Message}");
-                throw; // Ré-élévation pour gestion en amont
+                return new List<(int, string, int, string?, List<int>)>();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur inattendue : {ex.Message}");
-                throw; // Ré-élévation pour gestion en amont
+                return new List<(int, string, int, string?, List<int>)>();
             }
         }
 

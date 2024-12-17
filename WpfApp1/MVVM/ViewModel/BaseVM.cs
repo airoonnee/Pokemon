@@ -14,7 +14,6 @@ namespace WpfApp1.MVVM.ViewModel
     abstract public class BaseVM : ObservableObject
     {
 
-        // Virtual because want override on child
         public virtual void OnShowVM() { }
         public virtual void OnHideVM() { }
        

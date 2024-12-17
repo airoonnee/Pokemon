@@ -18,13 +18,11 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Header -->
         <TextBlock Text="Connexion" 
                    Grid.Row="0" Grid.Column="1"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    FontSize="24" FontWeight="Bold" />
 
-        <!-- Login Form -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
             <TextBlock Text="Nom d'utilisateur :" Margin="0,5,0,5" />
             <TextBox x:Name="UsernameTextBox" Height="30" />
@@ -40,7 +38,6 @@
                     Click="ButtonLogin" />
         </StackPanel>
 
-        <!-- Footer -->
         <TextBlock Text="© 2024 Votre Application" 
                    Grid.Row="2" Grid.Column="1"
                    HorizontalAlignment="Center" 

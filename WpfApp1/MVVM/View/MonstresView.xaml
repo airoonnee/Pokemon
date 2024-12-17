@@ -8,7 +8,6 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <!-- Définition des colonnes : 1/2 pour les images, 1/2 pour l'espace vide -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -20,25 +19,14 @@
 
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Pokemon" 
                    HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="10" />
-        <!-- Section gauche : ScrollViewer avec des images -->
         <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="30">
             <WrapPanel x:Name="ImageStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" />
         </ScrollViewer>
 
-        <!-- Section droite : vide -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="20" VerticalAlignment="Top">
             
-                <!-- <TextBlock Text="Pokemon Details" FontSize="20" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="10" />
-
-                <Image x:Name="PokemonImage" Height="75" Margin="10" 
-                       HorizontalAlignment="Center" />
-
-                <TextBlock Text="Spells:" FontSize="14" FontWeight="Bold" 
-                           HorizontalAlignment="Center" Margin="20,10,20,10" /> -->
                 <StackPanel x:Name="RightPanelSpells" HorizontalAlignment="Center" Margin="5"/>
             
-
         </StackPanel>
     </Grid>
 </UserControl>

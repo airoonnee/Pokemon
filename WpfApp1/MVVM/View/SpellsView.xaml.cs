@@ -22,23 +22,25 @@ namespace WpfApp1.MVVM.View
     /// </summary>
     public partial class SpellsView : UserControl
     {
+        private Monster MonsterId;
+
         public SpellsView()
         {
             InitializeComponent();
-            LoadSpell();
+            LoadMonstersInFilter(); 
+            LoadSpells(DataSpell.DisplaySpell()); 
         }
-        private void LoadSpell()
+        private void LoadSpells(IEnumerable<(int Id, string Name, int Damage, string? Description, List<int> Monster)> spells)
         {
-            var spells = DataSpell.DisplaySpell();
+            SpellsWrapPanel.Children.Clear(); 
             if (spells != null && spells.Any())
             {
                 foreach (var spell in spells)
                 {
-                    // Créer un conteneur pour chaque sort
                     var border = new Border
                     {
                         BorderBrush = Brushes.Black,
-                        BorderThickness = new Thickness(1), // Correction : utilisation de Thickness pour la largeur de la bordure
+                        BorderThickness = new Thickness(1), 
                         Margin = new Thickness(10)
                     };
                     var spellPanel = new StackPanel
@@ -46,7 +48,6 @@ namespace WpfApp1.MVVM.View
                         Orientation = Orientation.Vertical
                     };
 
-                    // Ajouter le nom du sort
                     var nameTextBlock = new TextBlock
                     {
                         Text = spell.Name,
@@ -56,7 +57,7 @@ namespace WpfApp1.MVVM.View
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
                     spellPanel.Children.Add(nameTextBlock);
-                    // Ajouter les dégâts du sort
+
                     var damageTextBlock = new TextBlock
                     {
                         Text = $"Damage: {spell.Damage}",
@@ -66,7 +67,6 @@ namespace WpfApp1.MVVM.View
                     };
                     spellPanel.Children.Add(damageTextBlock);
 
-                    // Ajouter la description du sort
                     var descriptionTextBlock = new TextBlock
                     {
                         Text = spell.Description,
@@ -78,14 +78,11 @@ namespace WpfApp1.MVVM.View
                     spellPanel.Children.Add(descriptionTextBlock);
                     border.Child = spellPanel;
 
-                    // Ajouter le conteneur au ItemsControl
-                    //SpellsItemsControl.Items.Add(spellPanel);
                     SpellsWrapPanel.Children.Add(border);
                 }
             }
             else
             {
-                // Afficher un message si aucun sort n'est trouvé
                 var noSpellsTextBlock = new TextBlock
                 {
                     Text = "Aucun sort disponible.",
@@ -96,10 +93,46 @@ namespace WpfApp1.MVVM.View
                 };
                 SpellsWrapPanel.Children.Add(noSpellsTextBlock);
             }
-
-            //var monster = context.Monster.FirstOrDefault(m => m.Monster == monster);
-
         }
+        private void LoadMonstersInFilter()
+        {
+            var monsters = DataMonster.DisplayMonsterImages(); 
+            MonsterFilterComboBox.Items.Clear();
+            MonsterFilterComboBox.Items.Add(new ComboBoxItem { Content = "Tous", IsSelected = true });
 
+            foreach (var monster in monsters)
+            {
+                MonsterFilterComboBox.Items.Add(new ComboBoxItem
+                {
+                    Content = monster.Name,
+                    Tag = monster 
+                });
+            }
+        }
+        //public void CompareSpellWithMonster(IEnumerable<Spell> spells, IEnumerable<Monster> monsters)
+        //{
+        //    foreach (var spell in spells)
+        //    {
+        //        // Parcourir chaque sort
+        //        foreach (var monster in monsters)
+        //        {
+        //            // Comparer les IDs de sort et de monstre
+        //            if (monster.Spell.Any(s => s.Id == spell.Id))
+        //            {
+        //                // Le monstre a ce sort, faire quelque chose avec cette association
+        //                Console.WriteLine($"Le sort '{spell.Name}' est associé au monstre '{monster.Name}'");
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void OnMonsterFilterChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MonsterFilterComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                var selectedMonster = selectedItem.Tag;
+                
+            }
+        }
     }
 }

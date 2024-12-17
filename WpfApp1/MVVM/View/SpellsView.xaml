@@ -8,32 +8,28 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <!-- Définition des lignes et colonnes du Grid -->
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="Auto" MinHeight="35.96" />
-            <!-- Barre de tri -->
             <RowDefinition />
-            <!-- Contenu scrollable -->
         </Grid.RowDefinitions>
 
-        <!-- Titre "Spells" -->
         <TextBlock Text="Spells" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
 
-        <!-- Barre de tri par Pokémon -->
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Center" Width="118">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Center">
             <TextBlock Text="Filtrer par Pokémon : " VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox Name="MonsterFilterComboBox" Width="200" > <!-- SelectionChanged="OnMonsterFilterChanged"> -->
-                <ComboBoxItem Content="Tous" IsSelected="True"/>
-                <!-- Les items seront ajoutés dynamiquement -->
+            <ComboBox Name="MonsterFilterComboBox" Width="200" SelectionChanged="OnMonsterFilterChanged" Background="LightGray">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
         </StackPanel>
 
-        <!-- ScrollViewer pour afficher les sorts -->
-        <!-- ScrollViewer pour afficher les sorts -->
+
         <ScrollViewer Grid.Row="2" Margin="10,10,10,10" VerticalScrollBarVisibility="Auto">
             <WrapPanel Name="SpellsWrapPanel" ItemWidth="300" ItemHeight="100" HorizontalAlignment="Center">
-                <!-- Les items seront ajoutés ici -->
             </WrapPanel>
         </ScrollViewer>
     </Grid>

@@ -18,12 +18,10 @@
             <ColumnDefinition Width="17*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Header -->
         <TextBlock Text="Configuration de la base de données" Grid.Column="1"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    FontSize="24" FontWeight="Bold" Height="32" Width="412" />
 
-        <!-- URL Input Form -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,10,10">
             <TextBlock Text="URL de la base de données :" Margin="0,5,0,5" />
             <TextBox x:Name="UrlTextBox" Height="30" />
@@ -36,7 +34,6 @@
                     Click="ValidateUrlButton_Click" />
         </StackPanel>
 
-        <!-- Footer -->
         <TextBlock Text="© 2024 Votre Application" 
                    Grid.Row="2" Grid.Column="1"
                    HorizontalAlignment="Center" 

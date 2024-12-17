@@ -12,12 +12,11 @@ namespace WpfApp1.MVVM.ViewModel
     {
         private static string _connectionString;
 
-        public static void Initialize(string connectionString)
+        public static bool Initialize(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                MessageBox.Show("Veuillez saisir une URL valide.");
-                return;
+                return false;
             }
             _connectionString = connectionString;
 
@@ -25,10 +24,18 @@ namespace WpfApp1.MVVM.ViewModel
             try
             {
                 context.Database.EnsureCreated();
+                if (context.Database.CanConnect())
+                {
+                    return true;  
+                }
+                else
+                {
+                    return false;  
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur lors de la mise à jour : {ex.Message}");
+                return false;
             }
         }
 
@@ -43,7 +50,6 @@ namespace WpfApp1.MVVM.ViewModel
             using var context = new ExerciceMonsterContext(_connectionString);
             try
             {
-                // Vérifie si l'utilisateur existe déjà
                 if (context.Login.Any(u => u.Username == username))
                 {
                     MessageBox.Show("Le nom d'utilisateur existe déjà. Veuillez en choisir un autre.");
@@ -51,11 +57,10 @@ namespace WpfApp1.MVVM.ViewModel
                 }
                 string hashedPassword = PasswordHelper.HashPassword(password);
 
-                // Création d'un nouvel utilisateur
                 var newUser = new Login
                 {
                     Username = username,
-                    PasswordHash = hashedPassword // Vous devriez hacher le mot de passe ici avant de le stocker
+                    PasswordHash = hashedPassword 
                 };
                 context.Login.Add(newUser);
                 context.SaveChanges();

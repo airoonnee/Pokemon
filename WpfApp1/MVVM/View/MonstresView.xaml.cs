@@ -28,8 +28,6 @@ namespace WpfApp1.MVVM.View
             LoadMonsterImages();
 
         }
-        //private List<string> selectedMonsterSpells = new List<string>();
-
         private void LoadMonsterImages()
         {
             var monsters = DataMonster.DisplayMonsterImages();
@@ -38,25 +36,11 @@ namespace WpfApp1.MVVM.View
             if (monsters != null && monsters.Any())
             {
 
-                foreach (var tupleMonster in monsters)//monsterImages)
+                foreach (var tupleMonster in monsters)
                 {
-                    //foreach (var spellId in monster.Spells) // ID des sorts du monstre
-                    //{
-                    //    foreach (var spell in spells) // Liste complète des sorts
-                    //    {
-                    //        if (spell.Id == spellId)
-                    //        {
-                    //            // Afficher le nom du sort correspondant
-                    //            MessageBox.Show($"Sort trouvé : {spell.Name}, name:{spell.Name}");
-                    //        }
-                    //    }
-                    //}
-                    //string spellsText = string.Join(", ", monster.Spells);
-
-                    //MessageBox.Show(spellsText);
                     var monsterSpells = spells
-                    .Where(s => tupleMonster.Spells.Contains(s.Id)) // Associer les sorts par Id
-                    .Select(s => new Spell // Conversion explicite en objets Spell
+                    .Where(s => tupleMonster.Spells.Contains(s.Id)) 
+                    .Select(s => new Spell 
                     {
                         Id = s.Id,
                         Name = s.Name,
@@ -72,27 +56,18 @@ namespace WpfApp1.MVVM.View
                         Health = tupleMonster.Health,
                         InitialHealth = tupleMonster.Health,
                         ImageUrl = tupleMonster.ImageUrl,
-                        Spell = monsterSpells  // Associer les sorts
+                        Spell = monsterSpells  
                     };
 
-                    //var border = new Border
-                    //{
-                    //    BorderBrush = Brushes.Black,
-                    //    BorderThickness = new Thickness(1), // Correction : utilisation de Thickness pour la largeur de la bordure
-                    //    Margin = new Thickness(2)
-                    //};
-                    // Créer un bouton
                     var button = new Button
                     {
                         Margin = new Thickness(5),
-                        //HorizontalAlignment = HorizontalAlignment.Stretch,
                         Tag = monster
                     };
                     button.Click += (sender, args) =>
                     {
                         if (sender is Button clickedButton && clickedButton.Tag is Monster selectedMonster)
                         {
-                            // Masquer tous les panels dans RightPanelSpells
                             foreach (var child in RightPanelSpells.Children)
                             {
                                 if (child is StackPanel panel)
@@ -101,7 +76,6 @@ namespace WpfApp1.MVVM.View
                                 }
                             }
 
-                            // Afficher uniquement le panel correspondant au monstre
                             var matchingPanel = RightPanelSpells.Children
                                 .OfType<StackPanel>()
                                 .FirstOrDefault(panel => panel.Tag is Monster monster && monster.Id == selectedMonster.Id);
@@ -111,22 +85,8 @@ namespace WpfApp1.MVVM.View
                                 matchingPanel.Visibility = Visibility.Visible;
                             }
                         }
-                        //if (sender is Button clickedButton && clickedButton.Tag is Monster selectedMonster)
-                        //{
-                        //    var spellDetails = selectedMonster.Spell
-                        //        .Select(spell => $"Nom: {spell.Name}, Dégâts: {spell.Damage}")
-                        //        .ToList();
-
-                        //    string message = spellDetails.Any()
-                        //        ? string.Join("\n", spellDetails)
-                        //        : "Aucun sort disponible.";
-
-                        //    MessageBox.Show($"Sorts du monstre {selectedMonster.Name}, HP : {selectedMonster.Health}:\n{message}");
-                        //}
                     };
 
-
-                    // Créer un StackPanel pour contenir l'image et le texte
                     var stackPanelLeft = new StackPanel
                     {
                         Orientation = Orientation.Vertical
@@ -138,24 +98,21 @@ namespace WpfApp1.MVVM.View
                         Visibility = Visibility.Collapsed
                     };
 
-                    // Ajouter l'image au StackPanel
-
                     try
                     {
                         var image = new Image
                         {
                             Source = new BitmapImage(new Uri(monster.ImageUrl)),
-                            Height = 100, // Ajustez la taille selon vos besoins
+                            Height = 100, 
                             Margin = new Thickness(5)
                         };
                         stackPanelLeft.Children.Add(image);
-                        //stackPanelRight.Children.Add(image);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Erreur lors de l'affichage du nom {monster.ImageUrl}: {ex.Message}");
                     }
-                    // Ajouter le texte au StackPanel
+
                     var nameTextBlock = new TextBlock
                     {
                         Text = monster.Name,
@@ -164,15 +121,7 @@ namespace WpfApp1.MVVM.View
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
                     stackPanelLeft.Children.Add(nameTextBlock);
-                    //stackPanelRight.Children.Add(nameTextBlock);
 
-
-                    //var monsterSpells = spells
-                    //    .Where(spell => monster.Spell.Any(ms => ms.Id == spell.Id)) // Association par ID des sorts
-                    //    .ToList();
-
-
-                    // Ajouter un TextBlock pour chaque sort
                     if (monsterSpells.Any())
                     {
                         var namePokemon = new TextBlock
@@ -186,7 +135,7 @@ namespace WpfApp1.MVVM.View
                         var imagePokemon = new Image
                         {
                             Source = new BitmapImage(new Uri(monster.ImageUrl)),
-                            Height = 120, // Ajustez la taille selon vos besoins
+                            Height = 120, 
                             Margin = new Thickness(5)
                         };
                         stackPanelRight.Children.Add(imagePokemon);
@@ -207,12 +156,12 @@ namespace WpfApp1.MVVM.View
                                 Margin = new Thickness(2),
                                 Foreground = Brushes.DarkSlateBlue
                             };
-                            var border = new Border // Créez une nouvelle instance de Border ici
+                            var border = new Border 
                             {
                                 BorderBrush = Brushes.Black,
                                 BorderThickness = new Thickness(1),
                                 Margin = new Thickness(2),
-                                Child = spellTextBlock // Ajoutez le TextBlock à ce Border
+                                Child = spellTextBlock 
                             };
                             stackPanelRight.Children.Add(border);
                         }
@@ -220,23 +169,16 @@ namespace WpfApp1.MVVM.View
                         {
                             Content = "PLAY GAME",
                             Margin = new Thickness(5)
-                            //HorizontalAlignment = HorizontalAlignment.Stretch,
                         };
                         playGame.Click += (sender, e) =>
                         {
                             if (monster != null)
                             {
-                                // Sélectionner un monstre aléatoire (remplacez par votre logique)
-                                //var randomMonster = DataMonster.GetRandomMonster();
-
-                                // Instancier FightView avec les deux monstres
                                 var fightView = new FightView(monster);
 
-                                // Afficher FightView
                                 fightView.ShowDialog();
                             }
                         };
-
 
                         stackPanelRight.Children.Add(playGame);
                     }
@@ -251,25 +193,16 @@ namespace WpfApp1.MVVM.View
                         };
                         stackPanelRight.Children.Add(noSpellsTextBlock);
                     }
-                    //RightPanelSpells.Children.Clear();
                     RightPanelSpells.Children.Add(stackPanelRight);
 
                     button.Content = stackPanelLeft;
                     ImageStackPanel.Children.Add(button);
-
-
                 }
             }
             else
             {
                 Console.WriteLine("Aucune image trouvée.");
             }
-
-            //var monster = context.Monster.FirstOrDefault(m => m.Monster == monster);
-
         }
-       
-
-
     }
 }

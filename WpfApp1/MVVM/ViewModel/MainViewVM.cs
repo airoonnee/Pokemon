@@ -13,12 +13,10 @@ namespace WpfApp1.MVVM.ViewModel
 {
     public class MainViewVM : BaseVM
     {
-        //Called from view (With data binding)
         public ICommand RequestChangeViewCommand { get; set; }
         public MainViewVM()
         {
-            //Configure command to callback "HandleRequestChangeViewCommand"
-            //when command is called
+
             RequestChangeViewCommand = new RelayCommand(HandleRequestChangeViewCommand);
         }
 
